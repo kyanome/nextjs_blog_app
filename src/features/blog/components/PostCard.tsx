@@ -1,4 +1,4 @@
-import { Post } from "@/features/types/types";
+import { Post } from "@/features/blog/types/types";
 import Link from "next/link";
 
 function PostCard({ post }: { post: Post }) {
