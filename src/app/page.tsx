@@ -1,5 +1,7 @@
-import Image from "next/image";
+import PostList from "@/features/blog/components/PostList";
 
-export default function Home() {
-  return <div>first</div>;
+function Home() {
+  return <PostList />;
 }
+
+export default Home;
