@@ -1,4 +1,4 @@
-import PostList from "@/features/blog/components/PostList";
+import PostList from "@/app/_components/PostList";
 
 function Home() {
   return <PostList />;
