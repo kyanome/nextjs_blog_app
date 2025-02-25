@@ -1,7 +1,6 @@
 "use client";
-
 import { useParams } from "next/navigation";
-import usePost from "@/features/blog/hooks/usePost";
+import usePost from "@/app/_hooks/usePost";
 
 function PostDetail() {
   const { id } = useParams<{ id: string }>();
