@@ -1,8 +1,8 @@
 "use client";
 
-import usePosts from "@/features/blog/hooks/usePosts";
-import { Post } from "@/features/blog/types/types";
-import PostCard from "@/features/blog/components/PostCard";
+import usePosts from "@/app/_hooks/usePosts";
+import { Post } from "@/app/_types/index";
+import PostCard from "@/app/_components/PostCard";
 
 function PostList() {
   const { posts, loading } = usePosts();

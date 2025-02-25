@@ -1,5 +1,5 @@
-import ContactForm from "@/features/contact/components/ContactForm";
 import { NextPage } from "next";
+import ContactForm from "./_components/ContactForm";
 
 const Contact: NextPage = () => {
   return (

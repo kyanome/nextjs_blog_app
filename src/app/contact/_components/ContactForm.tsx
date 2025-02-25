@@ -1,8 +1,8 @@
 "use client";
 
-import { useContactForm } from "@/features/contact/hooks/useContactForm";
+import { useContactForm } from "@/app/contact/_hooks/useContactForm";
 import Input from "@/app/_components/Input";
-import { formValidations } from "@/features/contact/lib/validations";
+import { formValidations } from "@/app/contact/_lib/validations";
 import TextArea from "@/app/_components/TextArea";
 
 function ContactForm() {

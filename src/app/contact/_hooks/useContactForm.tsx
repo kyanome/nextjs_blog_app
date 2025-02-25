@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { API_BASE_URL } from "@/features/contact/lib/constants";
+import { API_BASE_URL } from "@/app/contact/_lib/constants";
 import { UseFormReturn } from "react-hook-form";
 
 export type FormData = {

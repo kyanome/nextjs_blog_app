@@ -1,5 +1,5 @@
-import { Post } from "@/features/blog/types/types";
 import Link from "next/link";
+import { Post } from "@/app/_types/index";
 
 function PostCard({ post }: { post: Post }) {
   return (

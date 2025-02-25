@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "@/features/blog/lib/constants";
-import { Post } from "@/features/blog/types/types";
+import { API_BASE_URL } from "@/app/_lib/constants";
+import { Post } from "@/app/_types/types";
 
 function usePost(id: string | undefined) {
   const [post, setPost] = useState<Post | null>(null);
