@@ -9,9 +9,17 @@ function usePost(id: string | undefined) {
   useEffect(() => {
     const fetcher = async () => {
       setLoading(true);
-      const res = await fetch(`${API_BASE_URL}/posts/${id}`);
-      const { post } = await res.json();
-      setPost(post);
+      const res = await fetch(
+        `https://wn2kv4c10k.microcms.io/api/v1/posts/${id}`,
+        {
+          headers: {
+            "X-MICROCMS-API-KEY": process.env
+              .NEXT_PUBLIC_MICROCMS_API_KEY as string,
+          },
+        }
+      );
+      const data = await res.json();
+      setPost(data);
       setLoading(false);
     };
     fetcher();

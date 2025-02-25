@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { API_BASE_URL } from "@/app/_lib/constants";
 import { Post } from "@/app/_types/index";
 
 function usePosts() {
@@ -11,9 +10,14 @@ function usePosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
-      const res = await fetch(`${API_BASE_URL}/posts`);
-      const data = (await res.json()) as { posts: Post[] };
-      setPosts(data.posts);
+      const res = await fetch("https://wn2kv4c10k.microcms.io/api/v1/posts", {
+        headers: {
+          "X-MICROCMS-API-KEY": process.env
+            .NEXT_PUBLIC_MICROCMS_API_KEY as string,
+        },
+      });
+      const data = await res.json();
+      setPosts(data.contents);
       setLoading(false);
     };
     fetchPosts();

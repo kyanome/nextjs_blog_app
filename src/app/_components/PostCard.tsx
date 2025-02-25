@@ -15,10 +15,10 @@ function PostCard({ post }: { post: Post }) {
           <div className="flex gap-2">
             {post.categories.map((category) => (
               <span
-                key={category}
+                key={category.id}
                 className="inline-block px-3 py-1 text-xs text-blue-500 bg-blue-50 rounded"
               >
-                {category}
+                {category.name}
               </span>
             ))}
           </div>

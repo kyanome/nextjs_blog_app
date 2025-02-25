@@ -6,10 +6,10 @@ export interface FieldBaseProps {
 }
 
 export type Post = {
-  id: number;
+  id: string;
   title: string;
-  thumbnailUrl: string;
-  createdAt: string;
-  categories: string[];
   content: string;
+  createdAt: string;
+  categories: { id: string; name: string }[];
+  thumbnail: { url: string; height: number; width: number };
 };
