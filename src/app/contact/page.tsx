@@ -1,11 +1,12 @@
 import ContactForm from "@/features/contact/components/ContactForm";
+import { NextPage } from "next";
 
-function Contact() {
+const Contact: NextPage = () => {
   return (
     <>
       <ContactForm />
     </>
   );
-}
+};
 
 export default Contact;
