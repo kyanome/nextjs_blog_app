@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { API_BASE_URL } from "@/app/_lib/constants";
-import { Post } from "@/app/_types/types";
+import { Post } from "@/app/_types/index";
 
 function usePosts() {
   const [posts, setPosts] = useState<Post[]>([]);
