@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import { SidebarProvider } from "./admin/_context/SidebarContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,17 +26,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <div>
-          <header className="bg-gray-800 text-white px-6 py-6 font-bold flex justify-between items-center">
-            <Link href="/" className="ml-4">
-              Blog
-            </Link>
-            <Link href="/contact" className="ml-4">
-              お問い合わせ
-            </Link>
-          </header>
-        </div>
-        <div className="max-w-3xl mx-auto my-10 px-4">{children}</div>
+        <SidebarProvider>
+          <div>{children}</div>
+        </SidebarProvider>
       </body>
     </html>
   );
