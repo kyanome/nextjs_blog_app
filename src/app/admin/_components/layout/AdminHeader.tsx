@@ -1,5 +1,5 @@
 import React from "react";
-import { useSidebar } from "../_context/SidebarContext";
+import { useSidebar } from "../../_context/SidebarContext";
 import { Button } from "@/components/ui/button";
 
 const AdminHeader = () => {

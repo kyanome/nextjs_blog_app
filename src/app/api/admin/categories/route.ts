@@ -10,7 +10,7 @@ export async function GET() {
     const categories = await db.category.findMany({
       orderBy: { created_at: "desc" },
     });
-    return NextResponse.json({ status: 200, data: categories });
+    return NextResponse.json({ status: 200, categories: categories });
   } catch (error) {
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 });

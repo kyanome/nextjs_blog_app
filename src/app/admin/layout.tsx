@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import AdminSidebar from "./_components/AdminSidebar";
-import AdminHeader from "./_components/AdminHeader";
+import AdminSidebar from "./_components/layout/AdminSidebar";
+import AdminHeader from "./_components/layout/AdminHeader";
 import { SidebarProvider, useSidebar } from "./_context/SidebarContext";
 import Backdrop from "./_layout/Backdrop";
 

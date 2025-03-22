@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useCallback } from "react";
-import { useSidebar } from "../_context/SidebarContext";
-import { NavItem, navItems } from "../_utils/constants";
+import { useSidebar } from "../../_context/SidebarContext";
+import { NavItem, navItems } from "../../_utils/constants";
 
 const AdminSidebar = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
