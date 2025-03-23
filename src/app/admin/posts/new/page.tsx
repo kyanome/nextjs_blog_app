@@ -107,6 +107,7 @@ const CreatePage = () => {
                   control={form.control}
                   name="thumbnailUrl"
                   label="画像URL"
+                  placeholder="/coffee.jpgと入力してください"
                 />
                 <MultiSelectField
                   control={form.control}
