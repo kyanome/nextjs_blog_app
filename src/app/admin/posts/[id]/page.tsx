@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/card";
 import { useDataFetch } from "@/hooks/useDataFetch";
 import { Category, Post } from "@/types";
-import { PostFormValues } from "../../_utils/validation";
+import { PostFormValues, postFormSchema } from "../../_utils/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const EditPage = () => {
   const router = useRouter();
@@ -38,6 +39,7 @@ const EditPage = () => {
     })) || [];
 
   const form = useForm<PostFormValues>({
+    resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: "",
       content: "",

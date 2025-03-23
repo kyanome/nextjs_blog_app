@@ -12,12 +12,17 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-import { CategoryFormValues } from "../../_utils/validation";
+import {
+  CategoryFormValues,
+  categoryFormSchema,
+} from "../../_utils/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const CreatePage = () => {
   const router = useRouter();
 
   const form = useForm<CategoryFormValues>({
+    resolver: zodResolver(categoryFormSchema),
     defaultValues: {
       name: "",
     },

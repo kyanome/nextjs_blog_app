@@ -15,7 +15,11 @@ import {
 
 import { useDataFetch } from "@/hooks/useDataFetch";
 import { Category } from "@prisma/client";
-import { CategoryFormValues } from "../../_utils/validation";
+import {
+  CategoryFormValues,
+  categoryFormSchema,
+} from "../../_utils/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const EditPage = () => {
   const params = useParams();
@@ -28,6 +32,7 @@ const EditPage = () => {
     useDataFetch<Category>(`admin/categories/${categoryId}`);
 
   const form = useForm<CategoryFormValues>({
+    resolver: zodResolver(categoryFormSchema),
     defaultValues: {
       name: "",
     },

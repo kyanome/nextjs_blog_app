@@ -14,17 +14,14 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDataFetch } from "@/hooks/useDataFetch";
 import { Category } from "@/types";
-import { PostFormValues } from "../../_utils/validation";
+import { PostFormValues, postFormSchema } from "../../_utils/validation";
 
 const CreatePage = () => {
-  const params = useParams();
   const router = useRouter();
-  const postId = params.id;
   const [isLoading, setIsLoading] = useState(true);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { data: allCategories, loading: isCategoriesLoading } =
     useDataFetch<Category[]>(`admin/categories`);
@@ -36,6 +33,7 @@ const CreatePage = () => {
     })) || [];
 
   const form = useForm<PostFormValues>({
+    resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: "",
       content: "",

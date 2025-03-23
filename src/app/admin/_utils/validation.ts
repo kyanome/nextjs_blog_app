@@ -16,7 +16,9 @@ export const postFormSchema = z.object({
     .trim()
     .min(1, { message: "サムネイルURLを入力してください" })
     .max(2048, { message: "URLが長すぎます" }),
-  categories: z.array(z.string()),
+  categories: z
+    .array(z.string())
+    .min(1, { message: "少なくとも1つのカテゴリーを選択してください" }),
 });
 
 export type PostFormValues = z.infer<typeof postFormSchema>;
