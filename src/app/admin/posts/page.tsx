@@ -20,7 +20,7 @@ const AdminPage = () => {
     <div className="container mx-auto p-4 max-w-3xl bg-gray-50 min-h-screen">
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">記事一覧</h1>
-        <Link href={"/admin/post/new"}>
+        <Link href={"/admin/posts/new"}>
           <Button variant="secondary" className="bg-brand-500 text-white">
             記事作成
           </Button>
