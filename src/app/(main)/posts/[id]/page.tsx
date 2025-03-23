@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useDataFetch } from "@/hooks/useDataFetch";
-import { Post } from "../../_types";
+import { Post } from "@/types";
 
 function PostDetail() {
   const { id } = useParams<{ id: string }>();

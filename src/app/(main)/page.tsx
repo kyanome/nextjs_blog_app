@@ -2,7 +2,7 @@
 
 import { useDataFetch } from "@/hooks/useDataFetch";
 import PostCard from "./_components/PostCard";
-import { Post } from "./_types";
+import { Post } from "@/types";
 
 function Home() {
   const { data: posts, loading } = useDataFetch<Post[]>(`/posts`);

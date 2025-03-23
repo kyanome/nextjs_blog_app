@@ -1,5 +1,5 @@
+import { Post } from "@/types";
 import Link from "next/link";
-import { Post } from "../_types";
 
 function PostCard({ post }: { post: Post }) {
   return (
