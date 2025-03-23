@@ -26,17 +26,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <div>
-          <header className="bg-gray-800 text-white px-6 py-6 font-bold flex justify-between items-center">
-            <Link href="/" className="ml-4">
-              Blog
-            </Link>
-            <Link href="/contact" className="ml-4">
-              お問い合わせ
-            </Link>
-          </header>
-        </div>
-        <div className="max-w-3xl mx-auto my-10 px-4">{children}</div>
+        <div>{children}</div>
       </body>
     </html>
   );
