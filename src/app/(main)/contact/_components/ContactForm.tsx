@@ -1,9 +1,9 @@
 "use client";
 
-import { useContactForm } from "@/app/contact/_hooks/useContactForm";
-import Input from "@/app/_components/Input";
-import { formValidations } from "@/app/contact/_lib/validations";
-import TextArea from "@/app/_components/TextArea";
+import Input from "../../_components/Input";
+import TextArea from "../../_components/TextArea";
+import { useContactForm } from "../_hooks/useContactForm";
+import { formValidations } from "../_lib/validations";
 
 function ContactForm() {
   const { form, submitForm, handleClear } = useContactForm();
