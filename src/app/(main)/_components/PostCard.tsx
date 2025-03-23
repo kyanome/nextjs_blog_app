@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Post } from "@/app/_types/index";
+import { Post } from "../_types";
 
 function PostCard({ post }: { post: Post }) {
   return (
@@ -10,15 +10,15 @@ function PostCard({ post }: { post: Post }) {
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
           <time className="text-sm text-gray-500">
-            {new Date(post.createdAt).toLocaleDateString()}
+            {new Date(post.created_at).toLocaleDateString()}
           </time>
           <div className="flex gap-2">
-            {post.categories.map((category) => (
+            {post.PostCategory.map((pc) => (
               <span
-                key={category.id}
+                key={pc.category.id}
                 className="inline-block px-3 py-1 text-xs text-blue-500 bg-blue-50 rounded"
               >
-                {category.name}
+                {pc.category.name}
               </span>
             ))}
           </div>

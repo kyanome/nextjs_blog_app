@@ -1,11 +1,11 @@
 "use client";
 
+import { useDataFetch } from "@/hooks/useDataFetch";
 import PostCard from "./_components/PostCard";
-import usePosts from "./_hooks/usePosts";
 import { Post } from "./_types";
 
 function Home() {
-  const { posts, loading } = usePosts();
+  const { data: posts, loading } = useDataFetch<Post[]>(`/posts`);
 
   if (loading) {
     return "読み込み中...";
@@ -17,7 +17,7 @@ function Home() {
 
   return (
     <div className="space-y-6">
-      {posts.map((post: Post) => (
+      {posts?.map((post) => (
         <div key={post.id}>
           <PostCard post={post} />
         </div>

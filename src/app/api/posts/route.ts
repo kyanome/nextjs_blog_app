@@ -1,4 +1,4 @@
-import { db } from "@/app/(main)/_lib/db";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -20,7 +20,7 @@ export async function GET() {
         created_at: "desc",
       },
     });
-    return NextResponse.json({ status: "OK", posts: posts }, { status: 200 });
+    return NextResponse.json({ status: "OK", data: posts }, { status: 200 });
   } catch (error) {
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 });

@@ -1,4 +1,4 @@
-import { db } from "@/app/(main)/_lib/db";
+import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 interface CategoryPostRequest {

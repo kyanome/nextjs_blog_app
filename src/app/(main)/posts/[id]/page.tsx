@@ -1,11 +1,12 @@
 "use client";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import usePost from "../../_hooks/usePost";
+import { useDataFetch } from "@/hooks/useDataFetch";
+import { Post } from "../../_types";
 
 function PostDetail() {
   const { id } = useParams<{ id: string }>();
-  const { post, loading } = usePost(id);
+  const { data: post, loading } = useDataFetch<Post>(`/posts/${id}`);
 
   if (loading) {
     return "読み込み中...";
@@ -17,24 +18,24 @@ function PostDetail() {
   return (
     <article>
       <Image
-        src={post.thumbnail.url}
+        src={post.thumbnailUrl}
         alt={post.title}
-        width={post.thumbnail.width}
-        height={post.thumbnail.height}
+        width={640}
+        height={480}
         className="w-full h-auto"
       />
       <div className="mt-4 mb-2 mx-4">
         <div className="flex justify-between items-center">
           <time className="text-sm text-gray-500">
-            {new Date(post.createdAt).toLocaleDateString()}
+            {new Date(post.created_at).toLocaleDateString()}
           </time>
           <div className="flex gap-2">
-            {post.categories.map((category) => (
+            {post.PostCategory.map((pc) => (
               <span
-                key={category.id}
+                key={pc.category.id}
                 className="text-sm text-blue-600 border border-blue-600 px-2 py-1 rounded"
               >
-                {category.name}
+                {pc.category.name}
               </span>
             ))}
           </div>
