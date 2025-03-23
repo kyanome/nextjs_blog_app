@@ -29,7 +29,7 @@ const AdminPage = () => {
 
       <div className="flex flex-col space-y-3">
         {posts?.map((post) => (
-          <Link key={post.id} href={`/admin/post/${post.id}`}>
+          <Link key={post.id} href={`/admin/posts/${post.id}`}>
             <Card className="w-full transition-all duration-300 hover:shadow-lg hover:translate-x-1 border-l-4 border-l-blue-500 overflow-hidden cursor-pointer">
               <CardHeader className="p-4 bg-white">
                 <CardTitle className="text-lg font-medium text-gray-800">
