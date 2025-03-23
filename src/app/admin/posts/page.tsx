@@ -14,8 +14,6 @@ import { Post } from "@prisma/client";
 const AdminPage = () => {
   const { data: posts, loading } = useDataFetch<Post[]>("admin/posts");
 
-  if (!posts || loading) return <div></div>;
-
   return (
     <div className="container mx-auto p-4 max-w-3xl bg-gray-50 min-h-screen">
       <div className="flex justify-between">
@@ -27,22 +25,30 @@ const AdminPage = () => {
         </Link>
       </div>
 
-      <div className="flex flex-col space-y-3">
-        {posts?.map((post) => (
-          <Link key={post.id} href={`/admin/posts/${post.id}`}>
-            <Card className="w-full transition-all duration-300 hover:shadow-lg hover:translate-x-1 border-l-4 border-l-blue-500 overflow-hidden cursor-pointer">
-              <CardHeader className="p-4 bg-white">
-                <CardTitle className="text-lg font-medium text-gray-800">
-                  {post.title}
-                </CardTitle>
-                <CardDescription className="text-xs text-gray-500 mt-1">
-                  {new Date(post.created_at).toLocaleDateString()}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-        ))}
-      </div>
+      {loading ? (
+        <div className="py-10 text-center text-gray-500">読み込み中...</div>
+      ) : !posts || posts.length === 0 ? (
+        <div className="py-10 text-center text-gray-500">
+          <p>記事がまだありません</p>
+        </div>
+      ) : (
+        <div className="flex flex-col space-y-3">
+          {posts.map((post) => (
+            <Link key={post.id} href={`/admin/posts/${post.id}`}>
+              <Card className="w-full transition-all duration-300 hover:shadow-lg hover:translate-x-1 border-l-4 border-l-blue-500 overflow-hidden cursor-pointer">
+                <CardHeader className="p-4 bg-white">
+                  <CardTitle className="text-lg font-medium text-gray-800">
+                    {post.title}
+                  </CardTitle>
+                  <CardDescription className="text-xs text-gray-500 mt-1">
+                    {new Date(post.created_at).toLocaleDateString()}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
