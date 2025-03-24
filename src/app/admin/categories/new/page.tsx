@@ -28,6 +28,9 @@ const CreatePage = () => {
     },
   });
 
+  const { handleSubmit, control, formState } = form;
+  const { isSubmitting } = formState;
+
   const onSubmit = async (formValues: CategoryFormValues) => {
     try {
       const response = await fetch(`/api/admin/categories/`, {
@@ -62,12 +65,13 @@ const CreatePage = () => {
         </CardHeader>
         <CardContent className="pt-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-6">
                 <TextInputField
-                  control={form.control}
+                  control={control}
                   name="name"
                   label="カテゴリー名"
+                  disabled={isSubmitting}
                 />
               </div>
               <CardFooter className="flex justify-between px-0 py-4 gap-4">
@@ -76,10 +80,15 @@ const CreatePage = () => {
                     variant="outline"
                     type="button"
                     onClick={() => router.push("/admin/categories")}
+                    disabled={isSubmitting}
                   >
                     キャンセル
                   </Button>
-                  <Button type="submit" className="px-6">
+                  <Button
+                    type="submit"
+                    className="px-6"
+                    disabled={isSubmitting}
+                  >
                     完了
                   </Button>
                 </div>

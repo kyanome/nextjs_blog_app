@@ -38,6 +38,9 @@ const EditPage = () => {
     },
   });
 
+  const { handleSubmit, control, formState } = form;
+  const { isSubmitting } = formState;
+
   useEffect(() => {
     if (category) {
       form.reset({
@@ -121,22 +124,29 @@ const EditPage = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => setShowDeleteConfirm(false)}
+                  disabled={isSubmitting}
                 >
                   キャンセル
                 </Button>
-                <Button variant="destructive" size="sm" onClick={handleDelete}>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={isSubmitting}
+                >
                   削除する
                 </Button>
               </div>
             </div>
           )}
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-6">
                 <TextInputField
-                  control={form.control}
+                  control={control}
                   name="name"
                   label="カテゴリー名"
+                  disabled={isSubmitting}
                 />
               </div>
               <CardFooter className="flex justify-between px-0 py-4 gap-4">
@@ -145,6 +155,7 @@ const EditPage = () => {
                     variant="destructive"
                     type="button"
                     onClick={() => setShowDeleteConfirm(true)}
+                    disabled={isSubmitting}
                   >
                     削除
                   </Button>
@@ -154,10 +165,15 @@ const EditPage = () => {
                     variant="outline"
                     type="button"
                     onClick={() => router.push("/admin/categories")}
+                    disabled={isSubmitting}
                   >
                     キャンセル
                   </Button>
-                  <Button type="submit" className="px-6">
+                  <Button
+                    type="submit"
+                    className="px-6"
+                    disabled={isSubmitting}
+                  >
                     完了
                   </Button>
                 </div>
