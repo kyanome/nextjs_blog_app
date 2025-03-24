@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDataFetch } from "@/hooks/useDataFetch";
 import { Category, CreatePostRequest } from "@/types";
 import { PostFormValues, postFormSchema } from "../../_utils/validation";
+import api from "@/utils/api";
 
 const CreatePage = () => {
   const router = useRouter();
@@ -62,13 +63,10 @@ const CreatePage = () => {
         categories: categories,
       };
 
-      const response = await fetch(`/api/admin/posts/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
+      const response = await api.post<CreatePostRequest>(
+        `/api/admin/posts/`,
+        requestData
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

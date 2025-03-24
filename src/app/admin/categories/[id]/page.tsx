@@ -20,6 +20,7 @@ import {
   categoryFormSchema,
 } from "../../_utils/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import api from "@/utils/api";
 
 const EditPage = () => {
   const params = useParams();
@@ -55,13 +56,7 @@ const EditPage = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/admin/categories/${categoryId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
+      const response = await api.delete(`/api/admin/categories/${categoryId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -73,17 +68,11 @@ const EditPage = () => {
   };
 
   const onSubmit = async (formValues: CategoryFormValues) => {
-    console.log(formValues.name);
     try {
-      const response = await fetch(`/api/admin/categories/${categoryId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formValues.name,
-        }),
-      });
+      const response = await api.put<string>(
+        `/api/admin/categories/${categoryId}`,
+        formValues.name
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

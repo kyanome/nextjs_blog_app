@@ -1,4 +1,5 @@
 "use client";
+import api from "@/utils/api";
 import { useEffect, useState } from "react";
 
 export const useDataFetch = <Data,>(path: string) => {
@@ -7,8 +8,7 @@ export const useDataFetch = <Data,>(path: string) => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch(`/api/${path}`);
-      const { data } = await res.json();
+      const { data } = await api.get(path);
       setData(data);
       setLoading(false);
     };

@@ -1,9 +1,6 @@
 import { db } from "@/lib/db";
+import { CategoryPostRequest } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
-
-interface CategoryPostRequest {
-  name: string;
-}
 
 export async function GET() {
   try {

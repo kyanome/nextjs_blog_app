@@ -17,6 +17,8 @@ import {
   categoryFormSchema,
 } from "../../_utils/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import api from "@/utils/api";
+import { CategoryPostRequest } from "@/types";
 
 const CreatePage = () => {
   const router = useRouter();
@@ -33,20 +35,13 @@ const CreatePage = () => {
 
   const onSubmit = async (formValues: CategoryFormValues) => {
     try {
-      const response = await fetch(`/api/admin/categories/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formValues.name,
-        }),
-      });
-
+      const response = await api.post<CategoryPostRequest>(
+        `/api/admin/categories/`,
+        { name: formValues.name }
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const result = await response.json();
       console.log("Update successful:", result);
       router.push("/admin/categories");

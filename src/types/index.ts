@@ -35,3 +35,7 @@ export type CreatePostRequest = {
   thumbnailUrl: string;
   categories: { id: number }[];
 };
+
+export interface CategoryPostRequest {
+  name: string;
+}

@@ -18,6 +18,7 @@ import { useDataFetch } from "@/hooks/useDataFetch";
 import { Category, Post, UpdatePostRequest } from "@/types";
 import { PostFormValues, postFormSchema } from "../../_utils/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import api from "@/utils/api";
 
 const EditPage = () => {
   const router = useRouter();
@@ -69,13 +70,7 @@ const EditPage = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/admin/posts/${postId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
+      const response = await api.delete(`/api/admin/posts/${postId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -98,14 +93,10 @@ const EditPage = () => {
         categories: categories,
       };
 
-      const response = await fetch(`/api/admin/posts/${postId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
+      const response = await api.put<UpdatePostRequest>(
+        `/api/admin/posts/${postId}`,
+        requestData
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
