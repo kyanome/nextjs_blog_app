@@ -9,10 +9,13 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useDataFetch } from "@/hooks/useDataFetch";
-import { Post } from "@prisma/client";
+import { Post } from "@/types";
 
 const AdminPage = () => {
   const { data: posts, loading } = useDataFetch<Post[]>("admin/posts");
+  if (posts) {
+    console.log("created_at type:", typeof posts[0].created_at);
+  }
 
   return (
     <div className="container mx-auto p-4 max-w-3xl bg-gray-50 min-h-screen">

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { CreatePostRequest } from "@/types";
+import { CreatePostRequest, Post } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const posts = await db.post.findMany({
+    const posts: Post[] = await db.post.findMany({
       include: {
         PostCategory: {
           include: {
