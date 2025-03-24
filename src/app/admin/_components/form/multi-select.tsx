@@ -117,6 +117,7 @@ interface MultiSelectProps
    * Optional, can be used to add custom styles.
    */
   className?: string;
+  disabled?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -135,6 +136,7 @@ export const MultiSelect = React.forwardRef<
       modalPopover = false,
       asChild = false,
       className,
+      disabled = false,
       ...props
     },
     ref
@@ -201,6 +203,7 @@ export const MultiSelect = React.forwardRef<
             ref={ref}
             {...props}
             onClick={handleTogglePopover}
+            disabled={disabled}
             className={cn(
               "flex w-full p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
               className

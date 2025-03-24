@@ -20,6 +20,7 @@ interface MultiSelectFieldProps {
   placeholder?: string;
   maxCount?: number;
   variant?: string;
+  disabled?: boolean;
 }
 
 export const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
@@ -30,6 +31,7 @@ export const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
   placeholder,
   maxCount,
   variant = "default",
+  disabled = false,
 }: MultiSelectFieldProps) => {
   return (
     <FormField
@@ -46,6 +48,7 @@ export const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
               placeholder={placeholder || `Select ${label.toLowerCase()}`}
               variant={variant as any}
               maxCount={maxCount}
+              disabled={disabled}
             />
           </FormControl>
           <FormMessage />

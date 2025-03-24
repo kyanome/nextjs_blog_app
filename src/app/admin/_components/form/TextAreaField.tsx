@@ -12,6 +12,7 @@ interface TextAreaFieldProps {
   control: Control<any>;
   name: any; //TODO:型の付け方を後で調査する. https://zenn.dev/masa5714/articles/9bf0a1c3f7b421
   label: string;
+  disabled: boolean;
   placeholder?: string;
 }
 
@@ -19,6 +20,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   control,
   name,
   label,
+  disabled,
   placeholder,
 }: TextAreaFieldProps) => {
   return (
@@ -29,7 +31,11 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Textarea placeholder={placeholder} {...field} />
+            <Textarea
+              placeholder={placeholder}
+              {...field}
+              disabled={disabled}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

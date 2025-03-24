@@ -42,6 +42,9 @@ const CreatePage = () => {
     },
   });
 
+  const { handleSubmit, control, formState } = form;
+  const { isSubmitting } = formState;
+
   useEffect(() => {
     setIsLoading(isCategoriesLoading);
   }, [isCategoriesLoading]);
@@ -72,10 +75,12 @@ const CreatePage = () => {
       }
 
       const result = await response.json();
-      console.log("Update successful:", result);
+      console.log("送信成功:", result);
       router.push("/admin");
     } catch (error) {
-      console.error("Update failed:", error);
+      console.error("送信失敗:", error);
+    } finally {
+      console.log("フォーム送信完了");
     }
   };
 
@@ -93,30 +98,34 @@ const CreatePage = () => {
         </CardHeader>
         <CardContent className="pt-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-6">
                 <TextInputField
-                  control={form.control}
+                  control={control}
                   name="title"
                   label="タイトル"
+                  disabled={isSubmitting}
                 />
                 <TextAreaField
-                  control={form.control}
+                  control={control}
                   name="content"
                   label="コンテンツ"
+                  disabled={isSubmitting}
                 />
                 <TextInputField
-                  control={form.control}
+                  control={control}
                   name="thumbnailUrl"
                   label="画像URL"
                   placeholder="/coffee.jpgと入力してください"
+                  disabled={isSubmitting}
                 />
                 <MultiSelectField
-                  control={form.control}
+                  control={control}
                   options={formattedCategories}
                   placeholder="カテゴリーを選択してください"
                   name="categories"
                   label="カテゴリー"
+                  disabled={isSubmitting}
                 />
               </div>
               <CardFooter className="flex justify-between px-0 py-4 gap-4">
@@ -125,11 +134,16 @@ const CreatePage = () => {
                     variant="outline"
                     type="button"
                     onClick={() => router.push("/admin/posts")}
+                    disabled={isSubmitting}
                   >
                     キャンセル
                   </Button>
-                  <Button type="submit" className="px-6">
-                    完了
+                  <Button
+                    type="submit"
+                    className="px-6"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "送信中..." : "完了"}
                   </Button>
                 </div>
               </CardFooter>
