@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDataFetch } from "@/hooks/useDataFetch";
-import { Category } from "@/types";
+import { Category, CreatePostRequest } from "@/types";
 import { PostFormValues, postFormSchema } from "../../_utils/validation";
 
 const CreatePage = () => {
@@ -52,17 +52,19 @@ const CreatePage = () => {
         id: parseInt(fv),
       }));
 
+      const requestData: CreatePostRequest = {
+        title: formValues.title,
+        content: formValues.content,
+        thumbnailUrl: formValues.thumbnailUrl,
+        categories: categories,
+      };
+
       const response = await fetch(`/api/admin/posts/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title: formValues.title,
-          content: formValues.content,
-          thumbnailUrl: formValues.thumbnailUrl,
-          categories: categories,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {

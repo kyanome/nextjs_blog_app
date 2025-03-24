@@ -15,7 +15,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { useDataFetch } from "@/hooks/useDataFetch";
-import { Category, Post } from "@/types";
+import { Category, Post, UpdatePostRequest } from "@/types";
 import { PostFormValues, postFormSchema } from "../../_utils/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -89,17 +89,19 @@ const EditPage = () => {
         id: parseInt(fv),
       }));
 
+      const requestData: UpdatePostRequest = {
+        title: formValues.title,
+        content: formValues.content,
+        thumbnailUrl: formValues.thumbnailUrl,
+        categories: categories,
+      };
+
       const response = await fetch(`/api/admin/posts/${postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title: formValues.title,
-          content: formValues.content,
-          thumbnailUrl: formValues.thumbnailUrl,
-          categories: categories,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {

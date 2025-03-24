@@ -1,12 +1,6 @@
 import { db } from "@/lib/db";
+import { UpdatePostRequest } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
-
-interface UpdatePostRequest {
-  title: string;
-  content: string;
-  thumbnailUrl: string;
-  categories: { id: number }[];
-}
 
 export async function GET(
   request: NextRequest,
