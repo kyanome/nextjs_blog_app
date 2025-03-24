@@ -49,15 +49,14 @@ const EditPage = () => {
   });
 
   useEffect(() => {
-    if (post) {
-      form.reset({
-        title: post.title || "",
-        content: post.content || "",
-        thumbnailUrl: post.thumbnailUrl || "",
-        categories:
-          post.PostCategory?.map((pc) => pc.category.id.toString()) || [],
-      });
-    }
+    if (!post) return;
+    form.reset({
+      title: post.title || "",
+      content: post.content || "",
+      thumbnailUrl: post.thumbnailUrl || "",
+      categories:
+        post.PostCategory?.map((pc) => pc.category.id.toString()) || [],
+    });
   }, [post, form]);
 
   // 読み込み状態を更新
