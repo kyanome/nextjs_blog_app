@@ -48,6 +48,9 @@ const EditPage = () => {
     },
   });
 
+  const { handleSubmit, control, formState } = form;
+  const { isSubmitting } = formState;
+
   useEffect(() => {
     if (!post) return;
     form.reset({
@@ -152,28 +155,32 @@ const EditPage = () => {
             </div>
           )}
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-6">
                 <TextInputField
-                  control={form.control}
+                  control={control}
                   name="title"
                   label="タイトル"
+                  disabled={isSubmitting}
                 />
                 <TextAreaField
-                  control={form.control}
+                  control={control}
                   name="content"
                   label="コンテンツ"
+                  disabled={isSubmitting}
                 />
                 <TextInputField
-                  control={form.control}
+                  control={control}
                   name="thumbnailUrl"
                   label="画像URL"
+                  disabled={isSubmitting}
                 />
                 <MultiSelectField
-                  control={form.control}
+                  control={control}
                   options={formattedCategories}
                   name="categories"
                   label="カテゴリー"
+                  disabled={isSubmitting}
                 />
               </div>
               <CardFooter className="flex justify-between px-0 py-4 gap-4">
@@ -182,6 +189,7 @@ const EditPage = () => {
                     variant="destructive"
                     type="button"
                     onClick={() => setShowDeleteConfirm(true)}
+                    disabled={isSubmitting}
                   >
                     削除
                   </Button>
@@ -191,10 +199,16 @@ const EditPage = () => {
                     variant="outline"
                     type="button"
                     onClick={() => router.push("/admin/posts")}
+                    disabled={isSubmitting}
                   >
                     キャンセル
                   </Button>
-                  <Button type="submit" className="px-6">
+
+                  <Button
+                    type="submit"
+                    className="px-6"
+                    disabled={isSubmitting}
+                  >
                     完了
                   </Button>
                 </div>
