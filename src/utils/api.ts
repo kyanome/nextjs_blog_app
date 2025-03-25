@@ -1,6 +1,9 @@
 const api = {
   get: async (path: string) => {
     const response = await fetch(`/api/${path}`);
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
     const result = await response.json();
     return result;
   },
@@ -13,6 +16,9 @@ const api = {
       },
       body: JSON.stringify(body),
     });
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
     return response;
   },
 
@@ -24,6 +30,9 @@ const api = {
       },
       body: JSON.stringify(body),
     });
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
     return response;
   },
 
@@ -34,6 +43,9 @@ const api = {
         "Content-Type": "application/json",
       },
     });
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
     return response;
   },
 };
