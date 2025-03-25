@@ -1,7 +1,8 @@
 import { db } from "@/lib/db";
+import { Category } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
-interface CategoryEditRequest {
+export interface CategoryUpdateRequest {
   name: string;
 }
 
@@ -11,7 +12,7 @@ export async function GET(
 ) {
   const { id } = await params;
   try {
-    const category = await db.category.findUnique({
+    const category: Category | null = await db.category.findUnique({
       where: { id: parseInt(id) },
     });
     return NextResponse.json({ status: "OK", data: category }, { status: 200 });
@@ -27,7 +28,7 @@ export async function PUT(
 ) {
   const { id } = await params;
   try {
-    const { name }: CategoryEditRequest = await request.json();
+    const { name }: CategoryUpdateRequest = await request.json();
     const category = await db.category.update({
       where: {
         id: parseInt(id),

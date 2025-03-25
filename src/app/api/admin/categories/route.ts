@@ -1,10 +1,14 @@
 import { db } from "@/lib/db";
-import { CategoryPostRequest } from "@/types";
+import { Category } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
+
+export interface CategoryPostRequest {
+  name: string;
+}
 
 export async function GET() {
   try {
-    const categories = await db.category.findMany({
+    const categories: Category[] = await db.category.findMany({
       orderBy: { created_at: "desc" },
     });
     return NextResponse.json({ status: 200, data: categories });

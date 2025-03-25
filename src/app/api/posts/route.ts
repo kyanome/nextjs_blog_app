@@ -1,9 +1,10 @@
 import { db } from "@/lib/db";
+import { Post } from "@/types";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const posts = await db.post.findMany({
+    const posts: Post[] = await db.post.findMany({
       include: {
         PostCategory: {
           include: {

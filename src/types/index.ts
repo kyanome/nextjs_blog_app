@@ -21,21 +21,3 @@ export interface Category {
   id: number;
   name: string;
 }
-
-export interface UpdatePostRequest {
-  title: string;
-  content: string;
-  thumbnailUrl: string;
-  categories: { id: number }[];
-}
-
-export type CreatePostRequest = {
-  title: string;
-  content: string;
-  thumbnailUrl: string;
-  categories: { id: number }[];
-};
-
-export interface CategoryPostRequest {
-  name: string;
-}

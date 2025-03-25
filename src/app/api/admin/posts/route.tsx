@@ -1,6 +1,13 @@
 import { db } from "@/lib/db";
-import { CreatePostRequest, Post } from "@/types";
+import { Post } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
+
+export type CreatePostRequest = {
+  title: string;
+  content: string;
+  thumbnailUrl: string;
+  categories: { id: number }[];
+};
 
 export async function POST(request: NextRequest) {
   try {

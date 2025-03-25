@@ -1,6 +1,13 @@
 import { db } from "@/lib/db";
-import { UpdatePostRequest } from "@/types";
+import { Post } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
+
+export interface UpdatePostRequest {
+  title: string;
+  content: string;
+  thumbnailUrl: string;
+  categories: { id: number }[];
+}
 
 export async function GET(
   request: NextRequest,
@@ -8,7 +15,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const post = await db.post.findUnique({
+    const post: Post | null = await db.post.findUnique({
       where: { id: parseInt(id) },
       include: {
         PostCategory: {
