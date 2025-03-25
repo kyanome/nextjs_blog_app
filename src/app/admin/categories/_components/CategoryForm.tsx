@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import { useForm, Control } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
@@ -16,38 +17,90 @@ import {
   categoryFormSchema,
 } from "../../_utils/validation";
 import { TextInputField } from "../../_components/form/TextInputField";
+import { Category } from "@/types";
+import api from "@/utils/api";
 
 interface CategoryFormProps {
   title: string;
-  initialValues?: CategoryFormValues;
-  isLoading: boolean;
-  isSubmitting?: boolean;
-  onSubmit: (values: CategoryFormValues) => Promise<void>;
-  onCancel: () => void;
-  onDelete?: () => void;
+  category?: Category | undefined;
+  loading?: boolean;
+  categoryId?: string;
+  isCreating: boolean;
+  redirectPath: string;
 }
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
   title,
-  initialValues = {
-    name: "",
-  },
-  isLoading,
-  onSubmit,
-  onCancel,
-  onDelete,
+  category,
+  loading,
+  categoryId,
+  isCreating,
+  redirectPath,
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const router = useRouter();
 
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(categoryFormSchema),
-    defaultValues: initialValues,
+    defaultValues: { name: "" },
   });
+
+  useEffect(() => {
+    if (!category) return;
+    form.reset({ name: category.name });
+  }, [form, category]);
 
   const { handleSubmit, control, formState } = form;
   const { isSubmitting } = formState;
 
-  if (isLoading) {
+  // Controller機能：フォーム送信処理
+  const onSubmit = async (formValues: CategoryFormValues) => {
+    try {
+      let response;
+
+      if (isCreating) {
+        response = await api.post(`/api/admin/categories/`, {
+          name: formValues.name,
+        });
+        console.log("送信成功:", await response.json());
+      } else {
+        response = await api.put(`/api/admin/categories/${categoryId}`, {
+          name: formValues.name,
+        });
+        console.log("Update successful:", await response.json());
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      router.push(redirectPath);
+    } catch (error) {
+      console.error(isCreating ? "送信失敗:" : "Update failed:", error);
+    } finally {
+      if (isCreating) {
+        console.log("フォーム送信完了");
+      }
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await api.delete(`/api/admin/categories/${categoryId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      router.push(redirectPath);
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    router.push(redirectPath);
+  };
+
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -61,7 +114,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         </CardHeader>
         <CardContent className="pt-4">
           {/* Confirmation dialog for delete action */}
-          {onDelete && showDeleteConfirm && (
+          {!isCreating && showDeleteConfirm && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
               <h3 className="text-lg font-medium text-red-800 mb-2">
                 本当に削除しますか？
@@ -81,7 +134,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={onDelete}
+                  onClick={handleDelete}
                   disabled={isSubmitting}
                 >
                   削除する
@@ -100,7 +153,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                 />
               </div>
               <CardFooter className="flex justify-between px-0 py-4 gap-4">
-                {onDelete && !showDeleteConfirm && (
+                {!isCreating && !showDeleteConfirm && (
                   <Button
                     variant="destructive"
                     type="button"
@@ -114,7 +167,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={onCancel}
+                    onClick={handleCancel}
                     disabled={isSubmitting}
                   >
                     キャンセル

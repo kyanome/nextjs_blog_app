@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+
 import {
   Card,
   CardContent,
@@ -15,46 +16,119 @@ import { PostFormValues, postFormSchema } from "../../_utils/validation";
 import { TextInputField } from "../../_components/form/TextInputField";
 import { TextAreaField } from "../../_components/form/TextAreaField";
 import { MultiSelectField } from "../../_components/form/MultiSelectField";
-
-export type FormattedCategory = {
-  value: string;
-  label: string;
-};
+import { Category, Post } from "@/types";
+import DeleteConfirmation from "../../_components/form/DeleteConfirmation";
+import api from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 interface PostFormProps {
   title: string;
-  initialValues?: PostFormValues;
-  categories: FormattedCategory[];
-  isLoading: boolean;
-  isSubmitting?: boolean;
-  onSubmit: (values: PostFormValues) => Promise<void>;
-  onCancel: () => void;
-  onDelete?: () => void;
+  post?: Post | undefined;
+  categories: Category[] | undefined;
+  postId?: string;
+  redirectPath: string;
+  isCreating: boolean;
 }
 
 const PostForm: React.FC<PostFormProps> = ({
   title,
-  initialValues = {
-    title: "",
-    content: "",
-    thumbnailUrl: "",
-    categories: [],
-  },
+  post,
   categories,
-  isLoading,
-  onSubmit,
-  onCancel,
-  onDelete,
+  postId,
+  redirectPath,
+  isCreating,
 }) => {
+  const router = useRouter();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const formattedCategories =
+    categories?.map((category) => ({
+      value: category.id.toString(),
+      label: category.name,
+    })) || [];
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
-    defaultValues: initialValues,
+    defaultValues: {
+      title: "",
+      content: "",
+      thumbnailUrl: "",
+      categories: [],
+    },
   });
+
+  useEffect(() => {
+    if (title === "記事作成画面") {
+      setIsLoading(false);
+    }
+    if (!post) return;
+    form.reset({
+      title: post.title || "",
+      content: post.content || "",
+      thumbnailUrl: post.thumbnailUrl || "",
+      categories:
+        post.PostCategory?.map((pc) => pc.category.id.toString()) || [],
+    });
+    setIsLoading(false);
+  }, [post, form]);
 
   const { handleSubmit, control, formState } = form;
   const { isSubmitting } = formState;
+
+  const onSubmit = async (formValues: PostFormValues) => {
+    try {
+      const categories = formValues.categories.map((fv) => ({
+        id: parseInt(fv),
+      }));
+
+      const requestData = {
+        title: formValues.title,
+        content: formValues.content,
+        thumbnailUrl: formValues.thumbnailUrl,
+        categories: categories,
+      };
+
+      let response;
+
+      if (isCreating) {
+        // 作成処理
+        response = await api.post(`/api/admin/posts/`, requestData);
+        console.log("送信成功:", await response.json());
+      } else {
+        // 更新処理
+        response = await api.put(`/api/admin/posts/${postId}`, requestData);
+        console.log("Update successful:", await response.json());
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      router.push(redirectPath);
+    } catch (error) {
+      console.error(isCreating ? "送信失敗:" : "Update failed:", error);
+    } finally {
+      if (isCreating) {
+        console.log("フォーム送信完了");
+      }
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await api.delete(`/api/admin/posts/${postId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      window.location.href = "/admin/posts";
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    window.location.href = "/admin/posts";
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -69,27 +143,13 @@ const PostForm: React.FC<PostFormProps> = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-4">
-          {onDelete && showDeleteConfirm && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
-              <h3 className="text-lg font-medium text-red-800 mb-2">
-                本当に削除しますか？
-              </h3>
-              <p className="text-sm text-red-600 mb-4">
-                この操作は取り消せません。このコンテンツを削除すると、データは完全に削除されます。
-              </p>
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowDeleteConfirm(false)}
-                >
-                  キャンセル
-                </Button>
-                <Button variant="destructive" size="sm" onClick={onDelete}>
-                  削除する
-                </Button>
-              </div>
-            </div>
+          {!isCreating && (
+            <DeleteConfirmation
+              isVisible={showDeleteConfirm}
+              isSubmitting={isSubmitting}
+              onCancel={() => setShowDeleteConfirm(false)}
+              onConfirm={handleDelete}
+            />
           )}
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -115,7 +175,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 />
                 <MultiSelectField
                   control={control}
-                  options={categories}
+                  options={formattedCategories}
                   placeholder="カテゴリーを選択してください"
                   name="categories"
                   label="カテゴリー"
@@ -123,7 +183,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 />
               </div>
               <CardFooter className="flex justify-between px-0 py-4 gap-4">
-                {onDelete && !showDeleteConfirm && (
+                {!isCreating && !showDeleteConfirm && (
                   <Button
                     variant="destructive"
                     type="button"
@@ -137,7 +197,7 @@ const PostForm: React.FC<PostFormProps> = ({
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={onCancel}
+                    onClick={handleCancel}
                     disabled={isSubmitting}
                   >
                     キャンセル
