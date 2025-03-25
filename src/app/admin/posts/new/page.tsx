@@ -13,7 +13,9 @@ const CreatePage = () => {
       title: data.title,
       content: data.content,
       thumbnailUrl: data.thumbnailUrl,
-      categories: categories,
+      categories: data.categories.map((fv) => ({
+        id: parseInt(fv),
+      })),
     };
     try {
       const response = await api.post(`/api/admin/posts/`, requestData);

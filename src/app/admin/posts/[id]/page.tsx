@@ -10,21 +10,25 @@ import api from "@/utils/api";
 const EditPage = () => {
   const params = useParams();
   const postId = params.id as string;
-  const { post } = useAdminPost(postId);
-  const { categories } = useCategories();
+  const { post, mutate: mutatePost } = useAdminPost(postId);
+  const { categories, mutate: mutateCategory } = useCategories();
 
   const onSubmit = async (data: PostFormValues) => {
     const requestData = {
       title: data.title,
       content: data.content,
       thumbnailUrl: data.thumbnailUrl,
-      categories: categories,
+      categories: data.categories.map((fv) => ({
+        id: parseInt(fv),
+      })),
     };
     try {
       const response = await api.put(`/api/admin/posts/${postId}`, requestData);
       if (!response.ok) {
         throw new Error("Failed to update post");
       }
+      //mutatePost();
+      //mutateCategory();
     } catch (error) {
       console.error("Error updating post:", error);
       throw error;
