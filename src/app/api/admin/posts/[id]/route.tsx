@@ -30,7 +30,7 @@ export async function GET(
         },
       },
     });
-    return NextResponse.json({ status: 200, data: post });
+    return NextResponse.json(post, { status: 200 });
   } catch (error) {
     console.log(`error : ${error}`);
     return NextResponse.json({ error: error, status: 500 });

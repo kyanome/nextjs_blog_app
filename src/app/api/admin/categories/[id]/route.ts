@@ -15,7 +15,7 @@ export async function GET(
     const category: Category | null = await db.category.findUnique({
       where: { id: parseInt(id) },
     });
-    return NextResponse.json({ status: "OK", data: category }, { status: 200 });
+    return NextResponse.json(category, { status: 200 });
   } catch (error) {
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 });

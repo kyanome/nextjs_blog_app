@@ -21,7 +21,7 @@ export async function GET() {
         created_at: "desc",
       },
     });
-    return NextResponse.json({ status: "OK", data: posts }, { status: 200 });
+    return NextResponse.json(posts, { status: 200 });
   } catch (error) {
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 });

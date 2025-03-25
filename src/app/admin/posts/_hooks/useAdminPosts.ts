@@ -7,7 +7,7 @@ export const useAdminPosts = () => {
   const { data, error, isLoading } = useSWR("/api/admin/posts", api.get);
 
   return {
-    posts: data?.data as Post[],
+    posts: data as Post[],
     error,
     isLoading,
   };

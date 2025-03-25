@@ -7,7 +7,7 @@ export const useCategories = () => {
   const { data, error, isLoading } = useSWR("/api/admin/categories", api.get);
 
   return {
-    categories: data?.data as Category[],
+    categories: data as Category[],
     error,
     isLoading,
   };

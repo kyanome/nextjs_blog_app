@@ -7,7 +7,7 @@ export const usePosts = () => {
   const { data, error, isLoading } = useSWR("/api/posts", api.get);
 
   return {
-    posts: data?.data as Post[],
+    posts: data as Post[],
     error,
     isLoading,
   };

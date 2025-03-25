@@ -11,7 +11,7 @@ export async function GET() {
     const categories: Category[] = await db.category.findMany({
       orderBy: { created_at: "desc" },
     });
-    return NextResponse.json({ status: 200, data: categories });
+    return NextResponse.json(categories, { status: 200 });
   } catch (error) {
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 });
