@@ -1,23 +1,20 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import { useDataFetch } from "@/hooks/useDataFetch";
 import { Category } from "@prisma/client";
 import CategoryForm from "../_components/CategoryForm";
+import { useCategory } from "../_hooks/useCategory";
 
 const EditPage = () => {
   const params = useParams();
   const categoryId = params.id as string;
-
-  const { data: category, loading } = useDataFetch<Category>(
-    `admin/categories/${categoryId}`
-  );
+  const { category, isLoading } = useCategory(categoryId);
 
   return (
     <CategoryForm
       title="編集画面"
       category={category}
-      loading={loading}
+      loading={isLoading}
       categoryId={categoryId}
       isCreating={false}
       redirectPath="/admin/categories"

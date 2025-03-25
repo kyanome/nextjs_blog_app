@@ -8,14 +8,10 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useDataFetch } from "@/hooks/useDataFetch";
-import { Post } from "@/types";
+import { useAdminPosts } from "./_hooks/useAdminPosts";
 
 const AdminPage = () => {
-  const { data: posts, loading } = useDataFetch<Post[]>("admin/posts");
-  if (posts) {
-    console.log("created_at type:", typeof posts[0].created_at);
-  }
+  const { posts, isLoading } = useAdminPosts();
 
   return (
     <div className="container mx-auto p-4 max-w-3xl bg-gray-50 min-h-screen">
@@ -28,7 +24,7 @@ const AdminPage = () => {
         </Link>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <div className="py-10 text-center text-gray-500">読み込み中...</div>
       ) : !posts || posts.length === 0 ? (
         <div className="py-10 text-center text-gray-500">

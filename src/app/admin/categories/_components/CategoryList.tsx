@@ -1,14 +1,12 @@
 import React from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import { Category } from "@/types";
-import { useDataFetch } from "@/hooks/useDataFetch";
+import { useCategories } from "../_hooks/useCategories";
 
 export const CategoryList: React.FC = () => {
-  const { data: categories, loading } =
-    useDataFetch<Category[]>("admin/categories");
+  const { categories, isLoading } = useCategories();
 
-  if (loading) {
+  if (isLoading) {
     return <div className="py-10 text-center text-gray-500">読み込み中...</div>;
   }
 

@@ -1,17 +1,17 @@
 "use client";
 
-import { useDataFetch } from "@/hooks/useDataFetch";
 import PostCard from "./_components/PostCard";
 import { Post } from "@/types";
+import { usePosts } from "./_hooks/usePosts";
 
 function Home() {
-  const { data: posts, loading } = useDataFetch<Post[]>(`/posts`);
+  const { posts, isLoading } = usePosts();
 
-  if (loading) {
+  if (isLoading) {
     return "読み込み中...";
   }
 
-  if (!loading && !posts) {
+  if (!posts) {
     return <div>記事が見つかりません</div>;
   }
 

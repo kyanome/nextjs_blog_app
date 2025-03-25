@@ -1,6 +1,6 @@
 const api = {
   get: async (path: string) => {
-    const response = await fetch(`/api/${path}`);
+    const response = await fetch(path);
     if (!response.ok) {
       throw new Error(`API error: ${response.status} ${response.statusText}`);
     }

@@ -1,18 +1,18 @@
 "use client";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { useDataFetch } from "@/hooks/useDataFetch";
-import { Post } from "@/types";
+import { usePost } from "../../_hooks/usePost";
 
 function PostDetail() {
   const { id } = useParams<{ id: string }>();
-  const { data: post, loading } = useDataFetch<Post>(`/posts/${id}`);
+  const { post, isLoading } = usePost(id);
 
-  if (loading) {
+  if (isLoading) {
     return "読み込み中...";
   }
+
   if (!post) {
-    return <div>記事が見つかりません</div>;
+    return "投稿が見つかりませんでした。";
   }
 
   return (
