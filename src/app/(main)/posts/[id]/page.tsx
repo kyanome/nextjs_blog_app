@@ -1,6 +1,5 @@
 "use client";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import { usePost } from "../../_hooks/usePost";
 
 function PostDetail() {
@@ -17,13 +16,13 @@ function PostDetail() {
 
   return (
     <article>
-      <Image
+      {/* <Image
         src={post.thumbnailUrl}
         alt={post.title}
         width={640}
         height={480}
         className="w-full h-auto"
-      />
+      /> */}
       <div className="mt-4 mb-2 mx-4">
         <div className="flex justify-between items-center">
           <time className="text-sm text-gray-500">

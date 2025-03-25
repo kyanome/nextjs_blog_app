@@ -1,7 +1,6 @@
 "use client";
 
 import PostCard from "./_components/PostCard";
-import { Post } from "@/types";
 import { usePosts } from "./_hooks/usePosts";
 
 function Home() {
