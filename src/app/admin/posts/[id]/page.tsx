@@ -4,13 +4,32 @@ import { useParams } from "next/navigation";
 import PostForm from "../_components/PostForm";
 import { useAdminPost } from "../_hooks/useAdminPost";
 import { useCategories } from "../../categories/_hooks/useCategories";
+import { PostFormValues } from "../../_utils/validation";
+import api from "@/utils/api";
 
 const EditPage = () => {
   const params = useParams();
   const postId = params.id as string;
-
   const { post } = useAdminPost(postId);
   const { categories } = useCategories();
+
+  const onSubmit = async (data: PostFormValues) => {
+    const requestData = {
+      title: data.title,
+      content: data.content,
+      thumbnailUrl: data.thumbnailUrl,
+      categories: categories,
+    };
+    try {
+      const response = await api.put(`/api/admin/posts/${postId}`, requestData);
+      if (!response.ok) {
+        throw new Error("Failed to update post");
+      }
+    } catch (error) {
+      console.error("Error updating post:", error);
+      throw error;
+    }
+  };
 
   return (
     <PostForm
@@ -20,6 +39,7 @@ const EditPage = () => {
       postId={postId}
       redirectPath="/admin/posts"
       isCreating={false}
+      onSubmit={onSubmit}
     />
   );
 };

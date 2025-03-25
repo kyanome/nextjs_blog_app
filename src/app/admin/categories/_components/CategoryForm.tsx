@@ -27,6 +27,7 @@ interface CategoryFormProps {
   categoryId?: string;
   isCreating: boolean;
   redirectPath: string;
+  onSubmit: (data: CategoryFormValues) => Promise<void>;
 }
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
@@ -36,6 +37,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   categoryId,
   isCreating,
   redirectPath,
+  onSubmit,
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const router = useRouter();
@@ -53,37 +55,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   const { handleSubmit, control, formState } = form;
   const { isSubmitting } = formState;
 
-  // Controller機能：フォーム送信処理
-  const onSubmit = async (formValues: CategoryFormValues) => {
-    try {
-      let response;
-
-      if (isCreating) {
-        response = await api.post(`/api/admin/categories/`, {
-          name: formValues.name,
-        });
-        console.log("送信成功:", await response.json());
-      } else {
-        response = await api.put(`/api/admin/categories/${categoryId}`, {
-          name: formValues.name,
-        });
-        console.log("Update successful:", await response.json());
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      router.push(redirectPath);
-    } catch (error) {
-      console.error(isCreating ? "送信失敗:" : "Update failed:", error);
-    } finally {
-      if (isCreating) {
-        console.log("フォーム送信完了");
-      }
-    }
-  };
-
   const handleDelete = async () => {
     try {
       const response = await api.delete(`/api/admin/categories/${categoryId}`);
@@ -98,6 +69,15 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
 
   const handleCancel = () => {
     router.push(redirectPath);
+  };
+
+  const handleFormSubmit = async (values: CategoryFormValues) => {
+    try {
+      await onSubmit(values);
+      router.push("/admin/categories");
+    } catch (error) {
+      console.error("Failed to submit category:", error);
+    }
   };
 
   if (loading) {
@@ -143,7 +123,10 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
             </div>
           )}
           <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={handleSubmit(handleFormSubmit)}
+              className="space-y-6"
+            >
               <div className="space-y-6">
                 <TextInputField
                   control={control}

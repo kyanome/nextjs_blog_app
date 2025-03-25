@@ -28,6 +28,7 @@ interface PostFormProps {
   postId?: string;
   redirectPath: string;
   isCreating: boolean;
+  onSubmit: (data: PostFormValues) => Promise<void>;
 }
 
 const PostForm: React.FC<PostFormProps> = ({
@@ -37,6 +38,7 @@ const PostForm: React.FC<PostFormProps> = ({
   postId,
   redirectPath,
   isCreating,
+  onSubmit,
 }) => {
   const router = useRouter();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -59,9 +61,7 @@ const PostForm: React.FC<PostFormProps> = ({
   });
 
   useEffect(() => {
-    if (title === "記事作成画面") {
-      setIsLoading(false);
-    }
+    if (isCreating) setIsLoading(false);
     if (!post) return;
     form.reset({
       title: post.title || "",
@@ -76,58 +76,29 @@ const PostForm: React.FC<PostFormProps> = ({
   const { handleSubmit, control, formState } = form;
   const { isSubmitting } = formState;
 
-  const onSubmit = async (formValues: PostFormValues) => {
-    try {
-      const categories = formValues.categories.map((fv) => ({
-        id: parseInt(fv),
-      }));
-
-      const requestData = {
-        title: formValues.title,
-        content: formValues.content,
-        thumbnailUrl: formValues.thumbnailUrl,
-        categories: categories,
-      };
-
-      let response;
-
-      if (isCreating) {
-        // 作成処理
-        response = await api.post(`/api/admin/posts/`, requestData);
-        console.log("送信成功:", await response.json());
-      } else {
-        // 更新処理
-        response = await api.put(`/api/admin/posts/${postId}`, requestData);
-        console.log("Update successful:", await response.json());
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      router.push(redirectPath);
-    } catch (error) {
-      console.error(isCreating ? "送信失敗:" : "Update failed:", error);
-    } finally {
-      if (isCreating) {
-        console.log("フォーム送信完了");
-      }
-    }
-  };
-
   const handleDelete = async () => {
     try {
       const response = await api.delete(`/api/admin/posts/${postId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      window.location.href = "/admin/posts";
+      router.push("/admin/posts");
     } catch (error) {
       console.error("Delete failed:", error);
     }
   };
 
   const handleCancel = () => {
-    window.location.href = "/admin/posts";
+    router.push("/admin/posts");
+  };
+
+  const handleFormSubmit = async (values: PostFormValues) => {
+    try {
+      await onSubmit(values);
+      router.push("/admin/posts");
+    } catch (error) {
+      console.error("Failed to submit post:", error);
+    }
   };
 
   if (isLoading) {
@@ -152,7 +123,10 @@ const PostForm: React.FC<PostFormProps> = ({
             />
           )}
           <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={handleSubmit(handleFormSubmit)}
+              className="space-y-6"
+            >
               <div className="space-y-6">
                 <TextInputField
                   control={control}
