@@ -26,7 +26,6 @@ interface PostFormProps {
   post?: Post | undefined;
   categories: Category[] | undefined;
   postId?: string;
-  redirectPath: string;
   isCreating: boolean;
   onSubmit: (data: PostFormValues) => Promise<void>;
 }
@@ -36,7 +35,6 @@ const PostForm: React.FC<PostFormProps> = ({
   post,
   categories,
   postId,
-  redirectPath,
   isCreating,
   onSubmit,
 }) => {

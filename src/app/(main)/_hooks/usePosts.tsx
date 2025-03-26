@@ -1,10 +1,9 @@
 "use client";
+import { useDataFetch } from "@/hooks/useDataFetch";
 import { Post } from "@/types";
-import api from "@/utils/api";
-import useSWR from "swr";
 
 export const usePosts = () => {
-  const { data, error, isLoading, mutate } = useSWR("/api/posts", api.get);
+  const { data, error, isLoading, mutate } = useDataFetch("/api/posts");
 
   return {
     posts: data as Post[],

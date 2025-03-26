@@ -1,12 +1,10 @@
 "use client";
+import { useDataFetch } from "@/hooks/useDataFetch";
 import { Post } from "@/types";
-import api from "@/utils/api";
-import useSWR from "swr";
 
 export const useAdminPost = (id: string) => {
-  const { data, error, isLoading, mutate } = useSWR(
-    `/api/admin/posts/${id}`,
-    api.get
+  const { data, error, isLoading, mutate } = useDataFetch(
+    `/api/admin/posts/${id}`
   );
 
   return {
