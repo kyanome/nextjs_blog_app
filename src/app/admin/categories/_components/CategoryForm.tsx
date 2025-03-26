@@ -51,6 +51,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   });
 
   useEffect(() => {
+    if (!category) return;
     form.reset({ name: category?.name });
   }, [form, category]);
 
