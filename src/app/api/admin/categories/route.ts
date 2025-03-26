@@ -24,11 +24,7 @@ export async function POST(request: NextRequest) {
     const result = await db.category.create({
       data: { name },
     });
-    return NextResponse.json({
-      status: "OK",
-      message: "作成しました",
-      id: result.id,
-    });
+    return NextResponse.json(result);
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ status: error.message }, { status: 400 });

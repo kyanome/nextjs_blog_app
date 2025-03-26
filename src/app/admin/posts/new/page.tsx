@@ -4,9 +4,11 @@ import PostForm from "../_components/PostForm";
 import { useCategories } from "../../categories/_hooks/useCategories";
 import { PostFormValues } from "../../_utils/validation";
 import api from "@/utils/api";
+import { usePosts } from "@/app/(main)/_hooks/usePosts";
 
 const CreatePage = () => {
   const { categories } = useCategories();
+  const { posts, mutate: mutatePosts } = usePosts();
 
   const onSubmit = async (data: PostFormValues) => {
     const requestData = {
@@ -22,7 +24,9 @@ const CreatePage = () => {
       if (!response.ok) {
         throw new Error("Failed to create post");
       }
-      console.log("送信成功:", await response.json());
+      const responsePostData = await response.json();
+      mutatePosts([...posts, responsePostData], false);
+      console.log("送信成功:", responsePostData);
     } catch (error) {
       console.error("Error creating post:", error);
     }

@@ -11,7 +11,7 @@ const EditPage = () => {
   const params = useParams();
   const postId = params.id as string;
   const { post, mutate: mutatePost } = useAdminPost(postId);
-  const { categories, mutate: mutateCategory } = useCategories();
+  const { categories } = useCategories();
 
   const onSubmit = async (data: PostFormValues) => {
     const requestData = {
@@ -27,8 +27,24 @@ const EditPage = () => {
       if (!response.ok) {
         throw new Error("Failed to update post");
       }
-      //mutatePost();
-      //mutateCategory();
+
+      if (post) {
+        const updatedPost = {
+          ...post,
+          title: data.title,
+          content: data.content,
+          thumbnailUrl: data.thumbnailUrl,
+          PostCategory: data.categories.map((categoryId) => ({
+            category: {
+              id: parseInt(categoryId),
+              name:
+                categories?.find((c) => c.id === parseInt(categoryId))?.name ||
+                "",
+            },
+          })),
+        };
+        mutatePost(updatedPost, false);
+      }
     } catch (error) {
       console.error("Error updating post:", error);
       throw error;

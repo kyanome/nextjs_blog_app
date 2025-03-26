@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import { Category } from "@prisma/client";
 import CategoryForm from "../_components/CategoryForm";
 import { useCategory } from "../_hooks/useCategory";
 import { CategoryFormValues } from "../../_utils/validation";
@@ -11,7 +10,11 @@ import api from "@/utils/api";
 const EditPage = () => {
   const params = useParams();
   const categoryId = params.id as string;
-  const { category, isLoading } = useCategory(categoryId);
+  const {
+    category,
+    isLoading,
+    mutate: mutateCategory,
+  } = useCategory(categoryId);
 
   const onSubmit = async (data: CategoryFormValues) => {
     const requestData = { name: data.name };
@@ -21,6 +24,7 @@ const EditPage = () => {
         requestData
       );
       console.log("Update successful:", await response.json());
+      mutateCategory(requestData, false);
     } catch (error) {
       console.error("Error updating category:", error);
     }
