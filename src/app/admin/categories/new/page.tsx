@@ -7,7 +7,7 @@ import { CategoryPostRequest } from "@/app/api/admin/categories/route";
 import { useCategories } from "../_hooks/useCategories";
 
 const CreatePage = () => {
-  const { categories, mutate: mutateCategories } = useCategories();
+  const { mutate: mutateCategories } = useCategories();
 
   const onSubmit = async (data: CategoryFormValues) => {
     const requestData = { name: data.name };
@@ -20,7 +20,7 @@ const CreatePage = () => {
       if (!response.ok) {
         throw new Error("Failed to create post");
       }
-      mutateCategories([...categories, responseCategoryData], false);
+      mutateCategories();
       console.log("送信成功:", responseCategoryData);
     } catch (error) {
       console.error("Error creating category:", error);
@@ -33,6 +33,7 @@ const CreatePage = () => {
       isCreating={true}
       redirectPath="/admin/categories"
       onSubmit={onSubmit}
+      mutate={mutateCategories}
     />
   );
 };

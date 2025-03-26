@@ -24,7 +24,7 @@ const EditPage = () => {
         requestData
       );
       console.log("Update successful:", await response.json());
-      mutateCategory(requestData, false);
+      mutateCategory();
     } catch (error) {
       console.error("Error updating category:", error);
     }
@@ -39,6 +39,7 @@ const EditPage = () => {
       isCreating={false}
       redirectPath="/admin/categories"
       onSubmit={onSubmit}
+      mutate={mutateCategory}
     />
   );
 };

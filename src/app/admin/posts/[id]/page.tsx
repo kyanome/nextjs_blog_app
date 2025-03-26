@@ -27,24 +27,7 @@ const EditPage = () => {
       if (!response.ok) {
         throw new Error("Failed to update post");
       }
-
-      if (post) {
-        const updatedPost = {
-          ...post,
-          title: data.title,
-          content: data.content,
-          thumbnailUrl: data.thumbnailUrl,
-          PostCategory: data.categories.map((categoryId) => ({
-            category: {
-              id: parseInt(categoryId),
-              name:
-                categories?.find((c) => c.id === parseInt(categoryId))?.name ||
-                "",
-            },
-          })),
-        };
-        mutatePost(updatedPost, false);
-      }
+      mutatePost();
     } catch (error) {
       console.error("Error updating post:", error);
       throw error;
@@ -57,9 +40,9 @@ const EditPage = () => {
       post={post}
       categories={categories}
       postId={postId}
-      redirectPath="/admin/posts"
       isCreating={false}
       onSubmit={onSubmit}
+      mutate={mutatePost}
     />
   );
 };

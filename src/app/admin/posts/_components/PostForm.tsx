@@ -20,6 +20,7 @@ import { Category, Post } from "@/types";
 import DeleteConfirmation from "../../_components/form/DeleteConfirmation";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
+import { KeyedMutator } from "swr";
 
 interface PostFormProps {
   title: string;
@@ -28,6 +29,7 @@ interface PostFormProps {
   postId?: string;
   isCreating: boolean;
   onSubmit: (data: PostFormValues) => Promise<void>;
+  mutate: KeyedMutator<any>;
 }
 
 const PostForm: React.FC<PostFormProps> = ({
@@ -37,6 +39,7 @@ const PostForm: React.FC<PostFormProps> = ({
   postId,
   isCreating,
   onSubmit,
+  mutate,
 }) => {
   const router = useRouter();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -80,6 +83,7 @@ const PostForm: React.FC<PostFormProps> = ({
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      mutate();
       router.push("/admin/posts");
     } catch (error) {
       console.error("Delete failed:", error);

@@ -19,6 +19,7 @@ import {
 import { TextInputField } from "../../_components/form/TextInputField";
 import { Category } from "@/types";
 import api from "@/utils/api";
+import { KeyedMutator } from "swr";
 
 interface CategoryFormProps {
   title: string;
@@ -28,6 +29,7 @@ interface CategoryFormProps {
   isCreating: boolean;
   redirectPath: string;
   onSubmit: (data: CategoryFormValues) => Promise<void>;
+  mutate: KeyedMutator<any>;
 }
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
@@ -38,6 +40,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   isCreating,
   redirectPath,
   onSubmit,
+  mutate,
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const router = useRouter();
@@ -60,6 +63,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      mutate();
       router.push(redirectPath);
     } catch (error) {
       console.error("Delete failed:", error);

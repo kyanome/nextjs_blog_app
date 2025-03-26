@@ -8,7 +8,7 @@ import { usePosts } from "@/app/(main)/_hooks/usePosts";
 
 const CreatePage = () => {
   const { categories } = useCategories();
-  const { posts, mutate: mutatePosts } = usePosts();
+  const { mutate: mutatePosts } = usePosts();
 
   const onSubmit = async (data: PostFormValues) => {
     const requestData = {
@@ -25,7 +25,7 @@ const CreatePage = () => {
         throw new Error("Failed to create post");
       }
       const responsePostData = await response.json();
-      mutatePosts([...posts, responsePostData], false);
+      mutatePosts();
       console.log("送信成功:", responsePostData);
     } catch (error) {
       console.error("Error creating post:", error);
@@ -36,9 +36,9 @@ const CreatePage = () => {
     <PostForm
       title="記事作成画面"
       categories={categories}
-      redirectPath="/admin"
       isCreating={true}
       onSubmit={onSubmit}
+      mutate={mutatePosts}
     />
   );
 };
