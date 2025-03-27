@@ -1,3 +1,10 @@
+import { supabase } from "@/utils/supabase";
+
+const getAuthToken = async (): Promise<string | null> => {
+  const { data } = await supabase.auth.getSession();
+  return data.session?.access_token || null;
+};
+
 const api = {
   get: async (path: string) => {
     const response = await fetch(path, {
@@ -12,7 +19,8 @@ const api = {
     return result;
   },
 
-  getAdmin: async (path: string, token: string | null) => {
+  getAdmin: async (path: string) => {
+    const token = await getAuthToken();
     const response = await fetch(path, {
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +34,8 @@ const api = {
     return result;
   },
 
-  post: async <T>(path: string, body: T, token: string | null) => {
+  post: async <T>(path: string, body: T) => {
+    const token = await getAuthToken();
     const response = await fetch(path, {
       method: "POST",
       headers: {
@@ -41,7 +50,8 @@ const api = {
     return response;
   },
 
-  put: async <T>(path: string, body: T, token: string | null) => {
+  put: async <T>(path: string, body: T) => {
+    const token = await getAuthToken();
     const response = await fetch(path, {
       method: "PUT",
       headers: {
@@ -56,7 +66,8 @@ const api = {
     return response;
   },
 
-  delete: async (path: string, token: string | null) => {
+  delete: async (path: string) => {
+    const token = await getAuthToken();
     const response = await fetch(path, {
       method: "DELETE",
       headers: {

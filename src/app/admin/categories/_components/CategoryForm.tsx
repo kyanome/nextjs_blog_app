@@ -30,7 +30,6 @@ interface CategoryFormProps {
   redirectPath: string;
   onSubmit: (data: CategoryFormValues) => Promise<void>;
   mutate: KeyedMutator<any>;
-  token: string | null;
 }
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
@@ -42,7 +41,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   redirectPath,
   onSubmit,
   mutate,
-  token,
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const router = useRouter();
@@ -62,10 +60,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
 
   const handleDelete = async () => {
     try {
-      const response = await api.delete(
-        `/api/admin/categories/${categoryId}`,
-        token
-      );
+      const response = await api.delete(`/api/admin/categories/${categoryId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

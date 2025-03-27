@@ -2,11 +2,9 @@ import React from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { useCategories } from "../_hooks/useCategories";
-import { useSupabaseSession } from "@/hooks/useSupabaseSession";
 
 export const CategoryList: React.FC = () => {
-  const { token } = useSupabaseSession();
-  const { categories, isLoading } = useCategories(token);
+  const { categories, isLoading } = useCategories();
 
   if (isLoading) {
     return <div className="py-10 text-center text-gray-500">読み込み中...</div>;

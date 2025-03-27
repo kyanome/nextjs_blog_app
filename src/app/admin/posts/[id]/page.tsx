@@ -6,14 +6,12 @@ import { useAdminPost } from "../_hooks/useAdminPost";
 import { useCategories } from "../../categories/_hooks/useCategories";
 import { PostFormValues } from "../../_utils/validation";
 import api from "@/utils/api";
-import { useSupabaseSession } from "@/hooks/useSupabaseSession";
 
 const EditPage = () => {
-  const { token } = useSupabaseSession();
   const params = useParams();
   const postId = params.id as string;
-  const { post, mutate: mutatePost } = useAdminPost(postId, token);
-  const { categories } = useCategories(token);
+  const { post, mutate: mutatePost } = useAdminPost(postId);
+  const { categories } = useCategories();
 
   const onSubmit = async (data: PostFormValues) => {
     const requestData = {
@@ -25,11 +23,7 @@ const EditPage = () => {
       })),
     };
     try {
-      const response = await api.put(
-        `/api/admin/posts/${postId}`,
-        requestData,
-        token
-      );
+      const response = await api.put(`/api/admin/posts/${postId}`, requestData);
       if (!response.ok) {
         throw new Error("Failed to update post");
       }
@@ -49,7 +43,6 @@ const EditPage = () => {
       isCreating={false}
       onSubmit={onSubmit}
       mutate={mutatePost}
-      token={token}
     />
   );
 };

@@ -2,10 +2,9 @@
 import { Post } from "@/types";
 import { useAdminDataFetch } from "../../_hooks/useAdminDataFetch";
 
-export const useAdminPost = (id: string, token: string | null) => {
+export const useAdminPost = (id: string) => {
   const { data, error, isLoading, mutate } = useAdminDataFetch(
-    `/api/admin/posts/${id}`,
-    token
+    `/api/admin/posts/${id}`
   );
 
   return {
