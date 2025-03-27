@@ -21,6 +21,7 @@ import DeleteConfirmation from "../../_components/form/DeleteConfirmation";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { KeyedMutator } from "swr";
+import { ImageInputField } from "../../_components/form/ImageInputField";
 
 interface PostFormProps {
   title: string;
@@ -58,7 +59,7 @@ const PostForm: React.FC<PostFormProps> = ({
     defaultValues: {
       title: "",
       content: "",
-      thumbnailUrl: "",
+      thumbnailUrl: undefined,
       categories: [],
     },
   });
@@ -69,7 +70,6 @@ const PostForm: React.FC<PostFormProps> = ({
     form.reset({
       title: post.title || "",
       content: post.content || "",
-      thumbnailUrl: post.thumbnailUrl || "",
       categories:
         post.PostCategory?.map((pc) => pc.category.id.toString()) || [],
     });
@@ -144,11 +144,10 @@ const PostForm: React.FC<PostFormProps> = ({
                   label="コンテンツ"
                   disabled={isSubmitting}
                 />
-                <TextInputField
+                <ImageInputField
                   control={control}
                   name="thumbnailUrl"
                   label="画像URL"
-                  placeholder="/coffee.jpgと入力してください"
                   disabled={isSubmitting}
                 />
                 <MultiSelectField
