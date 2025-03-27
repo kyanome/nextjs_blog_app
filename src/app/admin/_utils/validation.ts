@@ -11,9 +11,10 @@ export const postFormSchema = z.object({
     .trim()
     .min(1, { message: "タイトルを入力してください" })
     .max(500, { message: "500文字以下にしてください" }),
-  thumbnailUrl: z.instanceof(File).refine((file) => file.size < 7000000, {
-    message: "7MB以下の画像をアップロードしてください",
-  }),
+  thumbnailUrl: z
+    .string()
+    .url("有効なURL形式である必要があります")
+    .or(z.string().length(0)),
   categories: z
     .array(z.string())
     .min(1, { message: "少なくとも1つのカテゴリーを選択してください" }),

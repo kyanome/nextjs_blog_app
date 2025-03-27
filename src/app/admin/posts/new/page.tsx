@@ -6,7 +6,6 @@ import { PostFormValues } from "../../_utils/validation";
 import api from "@/utils/api";
 import { useSupabaseSession } from "@/hooks/useSupabaseSession";
 import { useAdminPosts } from "../_hooks/useAdminPosts";
-import { v4 as uuid } from "uuid";
 import { supabase } from "@/utils/supabase";
 
 const CreatePage = () => {
@@ -15,26 +14,10 @@ const CreatePage = () => {
   const { mutate: mutatePosts } = useAdminPosts(token);
 
   const onSubmit = async (values: PostFormValues) => {
-    const file = values.thumbnailUrl;
-    const filePath = `private/${uuid()}`;
-    const { data, error } = await supabase.storage
-      .from("post-thumbnail")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-    if (error) {
-      alert(error.message);
-      return;
-    }
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("post-thumbnail").getPublicUrl(data.path);
-
     const requestData = {
       title: values.title,
       content: values.content,
-      thumbnailUrl: publicUrl,
+      thumbnailUrl: values.thumbnailUrl,
       categories: values.categories.map((fv) => ({
         id: parseInt(fv),
       })),
