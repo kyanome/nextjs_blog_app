@@ -4,18 +4,18 @@ import PostForm from "../_components/PostForm";
 import { useCategories } from "../../categories/_hooks/useCategories";
 import { PostFormValues } from "../../_utils/validation";
 import api from "@/utils/api";
-import { usePosts } from "@/app/(main)/_hooks/usePosts";
+import { useAdminPosts } from "../_hooks/useAdminPosts";
 
 const CreatePage = () => {
   const { categories } = useCategories();
-  const { mutate: mutatePosts } = usePosts();
+  const { mutate: mutatePosts } = useAdminPosts();
 
-  const onSubmit = async (data: PostFormValues) => {
+  const onSubmit = async (values: PostFormValues) => {
     const requestData = {
-      title: data.title,
-      content: data.content,
-      thumbnailUrl: data.thumbnailUrl,
-      categories: data.categories.map((fv) => ({
+      title: values.title,
+      content: values.content,
+      thumbnailUrl: values.thumbnailUrl,
+      categories: values.categories.map((fv) => ({
         id: parseInt(fv),
       })),
     };

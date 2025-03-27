@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { Category } from "@/types";
+import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 export interface CategoryUpdateRequest {
@@ -10,6 +11,10 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const token = request.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 });
   const { id } = await params;
   try {
     const category: Category | null = await db.category.findUnique({
@@ -28,6 +33,10 @@ export async function PUT(
 ) {
   const { id } = await params;
   try {
+    const token = request.headers.get("Authorization") ?? "";
+    const { error } = await supabase.auth.getUser(token);
+    if (error)
+      return NextResponse.json({ status: error.message }, { status: 400 });
     const { name }: CategoryUpdateRequest = await request.json();
     const category = await db.category.update({
       where: {
@@ -50,6 +59,10 @@ export async function DELETE(
 ) {
   const { id } = await params;
   try {
+    const token = request.headers.get("Authorization") ?? "";
+    const { error } = await supabase.auth.getUser(token);
+    if (error)
+      return NextResponse.json({ status: error.message }, { status: 400 });
     const categories = await db.category.delete({
       where: { id: parseInt(id) },
     });

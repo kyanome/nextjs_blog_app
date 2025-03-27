@@ -4,8 +4,10 @@ import AdminSidebar from "./_components/layout/AdminSidebar";
 import { SidebarProvider, useSidebar } from "./_context/SidebarContext";
 import Backdrop from "./_components/layout/Backdrop";
 import AdminHeader from "./_components/layout/AdminHeader";
+import { useRouteGuard } from "./_hooks/useRouteGuard";
 
 const AdminLayoutContent = ({ children }: { children: React.ReactNode }) => {
+  useRouteGuard();
   const { isExpanded, isMobileOpen, isHovered } = useSidebar();
 
   const mainContentMargin = isMobileOpen

@@ -27,7 +27,7 @@ npx prisma migrate dev --name init
 4. アプリケーションの起動
 
 ```bash
-npx run dev
+npm run dev
 ```
 
 ## 使い方

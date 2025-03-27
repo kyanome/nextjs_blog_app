@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { Post } from "@/types";
+import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 export type CreatePostRequest = {
@@ -10,6 +11,10 @@ export type CreatePostRequest = {
 };
 
 export async function POST(request: NextRequest) {
+  const token = request.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 });
   try {
     const { title, content, thumbnailUrl, categories }: CreatePostRequest =
       await request.json();
@@ -37,8 +42,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const token = request.headers.get("Authorization") ?? "";
+    const { error } = await supabase.auth.getUser(token);
+    if (error)
+      return NextResponse.json({ status: error.message }, { status: 400 });
     const posts: Post[] = await db.post.findMany({
       include: {
         PostCategory: {

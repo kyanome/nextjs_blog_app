@@ -1,9 +1,10 @@
 "use client";
-import { useDataFetch } from "@/hooks/useDataFetch";
 import { Post } from "@/types";
+import { useAdminDataFetch } from "../../_hooks/useAdminDataFetch";
 
 export const useAdminPosts = () => {
-  const { data, error, isLoading, mutate } = useDataFetch("/api/admin/posts");
+  const { data, error, isLoading, mutate } =
+    useAdminDataFetch("/api/admin/posts");
 
   return {
     posts: data as Post[],

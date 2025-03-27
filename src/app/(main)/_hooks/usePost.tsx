@@ -1,5 +1,5 @@
 "use client";
-import { useDataFetch } from "@/hooks/useDataFetch";
+import { useDataFetch } from "@/app/(main)/_hooks/useDataFetch";
 import { Post } from "@/types";
 
 export const usePost = (id: string) => {

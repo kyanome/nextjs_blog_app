@@ -6,7 +6,7 @@ import useSWR from "swr";
 export const useCategories = () => {
   const { data, error, isLoading, mutate } = useSWR(
     "/api/admin/categories",
-    api.get
+    api.getAdmin
   );
 
   return {
