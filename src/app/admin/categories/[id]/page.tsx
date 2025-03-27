@@ -6,22 +6,25 @@ import { useCategory } from "../_hooks/useCategory";
 import { CategoryFormValues } from "../../_utils/validation";
 import { CategoryUpdateRequest } from "@/app/api/admin/categories/[id]/route";
 import api from "@/utils/api";
+import { useSupabaseSession } from "@/hooks/useSupabaseSession";
 
 const EditPage = () => {
+  const { token } = useSupabaseSession();
   const params = useParams();
   const categoryId = params.id as string;
   const {
     category,
     isLoading,
     mutate: mutateCategory,
-  } = useCategory(categoryId);
+  } = useCategory(categoryId, token);
 
   const onSubmit = async (data: CategoryFormValues) => {
     const requestData = { name: data.name };
     try {
       const response = await api.put<CategoryUpdateRequest>(
         `/api/admin/categories/${categoryId}`,
-        requestData
+        requestData,
+        token
       );
       console.log("Update successful:", await response.json());
       mutateCategory();
@@ -40,6 +43,7 @@ const EditPage = () => {
       redirectPath="/admin/categories"
       onSubmit={onSubmit}
       mutate={mutateCategory}
+      token={token}
     />
   );
 };

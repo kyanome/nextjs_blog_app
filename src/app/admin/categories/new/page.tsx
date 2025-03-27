@@ -5,16 +5,19 @@ import { CategoryFormValues } from "../../_utils/validation";
 import api from "@/utils/api";
 import { CategoryPostRequest } from "@/app/api/admin/categories/route";
 import { useCategories } from "../_hooks/useCategories";
+import { useSupabaseSession } from "@/hooks/useSupabaseSession";
 
 const CreatePage = () => {
-  const { mutate: mutateCategories } = useCategories();
+  const { token } = useSupabaseSession();
+  const { mutate: mutateCategories } = useCategories(token);
 
   const onSubmit = async (data: CategoryFormValues) => {
     const requestData = { name: data.name };
     try {
       const response = await api.post<CategoryPostRequest>(
         `/api/admin/categories/`,
-        requestData
+        requestData,
+        token
       );
       const responseCategoryData = await response.json();
       if (!response.ok) {
@@ -34,6 +37,7 @@ const CreatePage = () => {
       redirectPath="/admin/categories"
       onSubmit={onSubmit}
       mutate={mutateCategories}
+      token={token}
     />
   );
 };
