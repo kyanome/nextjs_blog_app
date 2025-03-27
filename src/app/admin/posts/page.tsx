@@ -9,9 +9,11 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAdminPosts } from "./_hooks/useAdminPosts";
+import { useSupabaseSession } from "@/hooks/useSupabaseSession";
 
 const AdminPage = () => {
-  const { posts, isLoading } = useAdminPosts();
+  const { token } = useSupabaseSession();
+  const { posts, isLoading } = useAdminPosts(token);
 
   return (
     <div className="container mx-auto p-4 max-w-3xl bg-gray-50 min-h-screen">

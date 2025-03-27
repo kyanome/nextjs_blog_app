@@ -30,6 +30,7 @@ interface PostFormProps {
   isCreating: boolean;
   onSubmit: (data: PostFormValues) => Promise<void>;
   mutate: KeyedMutator<any>;
+  token: string | null;
 }
 
 const PostForm: React.FC<PostFormProps> = ({
@@ -40,6 +41,7 @@ const PostForm: React.FC<PostFormProps> = ({
   isCreating,
   onSubmit,
   mutate,
+  token,
 }) => {
   const router = useRouter();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -79,7 +81,7 @@ const PostForm: React.FC<PostFormProps> = ({
 
   const handleDelete = async () => {
     try {
-      const response = await api.delete(`/api/admin/posts/${postId}`);
+      const response = await api.delete(`/api/admin/posts/${postId}`, token);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

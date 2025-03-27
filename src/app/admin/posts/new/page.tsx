@@ -4,11 +4,13 @@ import PostForm from "../_components/PostForm";
 import { useCategories } from "../../categories/_hooks/useCategories";
 import { PostFormValues } from "../../_utils/validation";
 import api from "@/utils/api";
-import { usePosts } from "@/app/(main)/_hooks/usePosts";
+import { useSupabaseSession } from "@/hooks/useSupabaseSession";
+import { useAdminPosts } from "../_hooks/useAdminPosts";
 
 const CreatePage = () => {
-  const { categories } = useCategories();
-  const { mutate: mutatePosts } = usePosts();
+  const { token } = useSupabaseSession();
+  const { categories } = useCategories(token);
+  const { mutate: mutatePosts } = useAdminPosts(token);
 
   const onSubmit = async (data: PostFormValues) => {
     const requestData = {
@@ -20,7 +22,7 @@ const CreatePage = () => {
       })),
     };
     try {
-      const response = await api.post(`/api/admin/posts/`, requestData);
+      const response = await api.post(`/api/admin/posts/`, requestData, token);
       if (!response.ok) {
         throw new Error("Failed to create post");
       }
@@ -39,6 +41,7 @@ const CreatePage = () => {
       isCreating={true}
       onSubmit={onSubmit}
       mutate={mutatePosts}
+      token={token}
     />
   );
 };

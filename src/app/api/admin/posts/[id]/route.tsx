@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { Post } from "@/types";
+import { supabase } from "@/utils/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 export interface UpdatePostRequest {
@@ -14,6 +15,10 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const token = request.headers.get("Authorization") ?? "";
+    const { error } = await supabase.auth.getUser(token);
+    if (error)
+      return NextResponse.json({ status: error.message }, { status: 400 });
     const { id } = await params;
     const post: Post | null = await db.post.findUnique({
       where: { id: parseInt(id) },
@@ -42,6 +47,10 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const token = request.headers.get("Authorization") ?? "";
+    const { error } = await supabase.auth.getUser(token);
+    if (error)
+      return NextResponse.json({ status: error.message }, { status: 400 });
     const { id } = await params;
     const { title, content, thumbnailUrl, categories }: UpdatePostRequest =
       await request.json();
@@ -71,6 +80,10 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const token = request.headers.get("Authorization") ?? "";
+    const { error } = await supabase.auth.getUser(token);
+    if (error)
+      return NextResponse.json({ status: error.message }, { status: 400 });
     const posts = await db.post.delete({
       where: { id: parseInt(params.id) },
     });
